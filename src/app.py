@@ -7,7 +7,6 @@ except ImportError:
 
 app = Flask(__name__)
 
-# Inicializa o banco de dados na primeira execução
 with app.app_context():
     database.init_db()
 
@@ -24,7 +23,6 @@ def index():
     leituras = database.listar_leituras(limite=10)
     estatisticas = database.obter_estatisticas()
     
-    # Prepara dados para o gráfico para evitar lógica complexa no Jinja
     chart_data = {
         "labels": [l['timestamp'].split(' ')[1][:5] for l in leituras][::-1] if leituras else [],
         "temps": [l['temperatura'] for l in leituras][::-1] if leituras else [],
@@ -73,14 +71,12 @@ def detalhe(id):
 def atualizar(id):
     """Atualiza campos de uma leitura. (Aceita POST para facilitar forms HTML)."""
     if request.method == 'POST' and request.form.get('_method') != 'PUT':
-        # Se for um POST normal de form, tratamos como UPDATE via form
         dados = {
             "temperatura": request.form.get('temperatura', type=float),
             "umidade": request.form.get('umidade', type=float),
             "pressao": request.form.get('pressao', type=float)
         }
     else:
-        # Se for PUT real ou simulado via JSON
         dados = request.get_json() if request.is_json else request.form.to_dict()
         if '_method' in dados: dados.pop('_method')
 
@@ -108,7 +104,6 @@ def estatisticas():
     return jsonify(data)
 
 if __name__ == '__main__':
-    # Usa configurações do config.py
     app.run(
         debug=getattr(config, 'DEBUG', True), 
         port=getattr(config, 'FLASK_PORT', 5000)

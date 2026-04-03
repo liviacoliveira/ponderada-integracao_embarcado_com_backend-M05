@@ -18,21 +18,18 @@ def iniciar_leitura_serial():
     ser = None
     while True:
         try:
-            # Tenta abrir a conexão serial
             if ser is None or not ser.is_open:
                 ser = serial.Serial(porta, baud, timeout=1)
                 print(f"Conectado ao Arduino na porta {porta}!")
 
-            # Lê uma linha da serial
             linha = ser.readline().decode('utf-8').strip()
             
             if linha:
                 print(f"Recebido: {linha}")
                 try:
-                    # Tenta converter a linha para JSON
                     dados = json.loads(linha)
                     
-                    # Extrai os valores (com fallback para None se não existirem)
+                    # Extrai os valores 
                     temp = dados.get('temperatura')
                     umid = dados.get('umidade')
                     pres = dados.get('pressao')

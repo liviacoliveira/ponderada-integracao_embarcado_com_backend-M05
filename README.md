@@ -72,8 +72,10 @@ A imagem abaixo apresenta a montagem do sistema no simulador:
 ## Estrutura do Projeto
 
 - `src/app.py`: Servidor Flask e definição das rotas.
+- `src/config.py`: Centralização de parâmetros e variáveis de ambiente.
 - `src/database.py`: Lógica de manipulação do banco de dados SQLite.
 - `src/schema.sql`: Definição das tabelas do banco de dados.
-- `src/static/css/style.css`: Estilização premium da interface.
+- `src/static/css/style.css`: Estilização da interface.
+- `src/static/images/circuito.png`: Imagem do circuito.
 - `src/templates/`: Arquivos HTML (Jinja2).
 - `dados.db`: Arquivo do banco de dados (gerado automaticamente).

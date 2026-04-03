@@ -6,21 +6,18 @@ try:
 except ImportError:
     import config
 
-# Configuração do banco de dados (centralizada em config.py)
-# Se o config.py não definir DB_FILE, usamos um padrão
 DB_FILE = getattr(config, 'DB_FILE', 'dados.db')
 
 def get_db_connection():
     """Retorna uma conexão SQLite configurada com row_factory e suporte a concorrência."""
     conn = sqlite3.connect(DB_FILE, timeout=10)
     conn.execute('PRAGMA journal_mode=WAL')
-    conn.execute('PRAGMA busy_timeout=5000') # espera até 5s
+    conn.execute('PRAGMA busy_timeout=5000') 
     conn.row_factory = sqlite3.Row
     return conn
 
 def init_db():
     """Cria as tabelas se não existirem (executa o schema.sql)."""
-    # Define o caminho do schema.sql em relação a este arquivo
     schema_path = Path(__file__).parent / "schema.sql"
     
     with get_db_connection() as conn:
@@ -55,7 +52,6 @@ def buscar_leitura(id):
 
 def atualizar_leitura(id, dados):
     """Atualiza os campos de uma leitura existente."""
-    # Gera a query dinamicamente com base nos campos fornecidos em 'dados'
     fields = ", ".join([f"{key} = ?" for key in dados.keys()])
     values = list(dados.values())
     values.append(id)
@@ -91,8 +87,6 @@ def obter_estatisticas():
         row = cursor.execute(query).fetchone()
         stats = dict(row) if row else None
         
-        # Se não houver registros, os valores agregados serão None. 
-        # Retornamos None para que o template saiba que não há dados.
         if stats and stats.get('total', 0) == 0:
             return None
             
