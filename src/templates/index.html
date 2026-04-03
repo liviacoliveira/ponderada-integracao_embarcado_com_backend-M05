@@ -66,10 +66,10 @@
 <script>
     const ctx = document.getElementById('tempChart').getContext('2d');
     const data = {
-        labels: {{ [l.timestamp.split(' ')[1][:5] for l in leituras]|reverse|list|tojson }},
+        labels: {{ chart_data.labels|tojson }},
         datasets: [{
             label: 'Temperatura (°C)',
-            data: {{ [l.temperatura for l in leituras]|reverse|list|tojson }},
+            data: {{ chart_data.temps|tojson }},
             borderColor: '#6366f1',
             tension: 0.4,
             fill: true,
@@ -77,7 +77,7 @@
         },
         {
             label: 'Umidade (%)',
-            data: {{ [l.umidade for l in leituras]|reverse|list|tojson }},
+            data: {{ chart_data.umids|tojson }},
             borderColor: '#22d3ee',
             tension: 0.4,
             fill: false

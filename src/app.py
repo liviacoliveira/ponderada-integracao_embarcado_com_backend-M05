@@ -19,7 +19,19 @@ def index():
     """Painel principal — últimas 10 leituras."""
     leituras = database.listar_leituras(limite=10)
     estatisticas = database.obter_estatisticas()
-    return responder('index.html', {'leituras': leituras, 'estatisticas': estatisticas})
+    
+    # Prepara dados para o gráfico para evitar lógica complexa no Jinja
+    chart_data = {
+        "labels": [l['timestamp'].split(' ')[1][:5] for l in leituras][::-1] if leituras else [],
+        "temps": [l['temperatura'] for l in leituras][::-1] if leituras else [],
+        "umids": [l['umidade'] for l in leituras][::-1] if leituras else []
+    }
+    
+    return responder('index.html', {
+        'leituras': leituras, 
+        'estatisticas': estatisticas,
+        'chart_data': chart_data
+    })
 
 @app.route('/leituras', methods=['GET'])
 def listar():
