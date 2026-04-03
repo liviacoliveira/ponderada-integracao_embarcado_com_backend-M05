@@ -1,7 +1,7 @@
 // Definição dos pinos analógicos
-const int pinoTemp = A0;      // TMP36
-const int pinoUmidade = A1;   // Sensor de Solo
-const int pinoPressao = A2;   // Potenciômetro
+const int pinoUmidade = A0;   // Sensor de Solo
+const int pinoPressao = A1;   // Potenciômetro
+const int pinoTemp = A2;      // TMP36
 
 void setup() {
   Serial.begin(9600); // Inicializa a comunicação serial [cite: 85]
