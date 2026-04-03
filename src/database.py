@@ -1,12 +1,17 @@
 import sqlite3
 import os
 from pathlib import Path
+try:
+    from . import config
+except ImportError:
+    import config
 
-# Configuração do caminho do banco de dados
-DB_FILE = "dados.db"
+# Configuração do banco de dados (centralizada em config.py)
+# Se o config.py não definir DB_FILE, usamos um padrão
+DB_FILE = getattr(config, 'DB_FILE', 'dados.db')
 
 def get_db_connection():
-    """Retorna uma conexão SQLITe configurada com row_factory e suporte a concorrência."""
+    """Retorna uma conexão SQLite configurada com row_factory e suporte a concorrência."""
     conn = sqlite3.connect(DB_FILE, timeout=10)
     conn.execute('PRAGMA journal_mode=WAL')
     conn.execute('PRAGMA busy_timeout=5000') # espera até 5s
@@ -84,4 +89,11 @@ def obter_estatisticas():
     with get_db_connection() as conn:
         cursor = conn.cursor()
         row = cursor.execute(query).fetchone()
-        return dict(row) if row else None
+        stats = dict(row) if row else None
+        
+        # Se não houver registros, os valores agregados serão None. 
+        # Retornamos None para que o template saiba que não há dados.
+        if stats and stats.get('total', 0) == 0:
+            return None
+            
+        return stats

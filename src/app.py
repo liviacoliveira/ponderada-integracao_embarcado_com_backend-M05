@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 import database
+try:
+    from . import config
+except ImportError:
+    import config
 
 app = Flask(__name__)
 
@@ -104,4 +108,8 @@ def estatisticas():
     return jsonify(data)
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    # Usa configurações do config.py
+    app.run(
+        debug=getattr(config, 'DEBUG', True), 
+        port=getattr(config, 'FLASK_PORT', 5000)
+    )
