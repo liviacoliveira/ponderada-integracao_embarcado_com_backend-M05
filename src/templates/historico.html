@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="header">
+    <h1>Histórico de Leituras</h1>
+    <p>Visualização tabular de todos os dados coletados pela estação.</p>
+</header>
+
+<div class="section-card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h2>Dados Registrados</h2>
+        <a href="{{ url_for('listar', limite=limite+50) }}" class="btn btn-primary">Carregar mais 50 registros</a>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Data / Hora</th>
+                <th>Temperatura</th>
+                <th>Umidade</th>
+                <th>Pressão</th>
+                <th>Local</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for leitura in leituras %}
+            <tr>
+                <td>#{{ leitura.id }}</td>
+                <td>{{ leitura.timestamp }}</td>
+                <td><span class="badge badge-temp">{{ "%.1f"|format(leitura.temperatura) }}°C</span></td>
+                <td><span class="badge badge-umid">{{ "%.1f"|format(leitura.umidade) }}%</span></td>
+                <td>{{ "%.1f"|format(leitura.pressao) if leitura.pressao else "--" }} hPa</td>
+                <td>{{ leitura.localizacao }}</td>
+                <td>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <a href="{{ url_for('detalhe', id=leitura.id) }}" class="btn" style="background: rgba(255,255,255,0.1); padding: 0.4rem 0.8rem; font-size: 0.75rem;">Editar</a>
+                        <form action="{{ url_for('deletar', id=leitura.id) }}" method="POST" onsubmit="return confirm('Tem certeza?');">
+                            <button type="submit" class="btn btn-danger" style="padding: 0.4rem 0.8rem; font-size: 0.75rem;">Deletar</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" style="text-align: center;">Nenhum dado encontrado.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div style="margin-top: 2rem; text-align: center;">
+    <a href="{{ url_for('index') }}" style="color: var(--text-dim);">← Voltar ao Dashboard</a>
+</div>
+{% endblock %}
