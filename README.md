@@ -46,7 +46,6 @@ A API suporta respostas em **HTML** (padrão para navegadores) e **JSON** (adici
 | **DELETE** | `/leituras/<id>/deletar` | **Remover**: Exclui um registro do banco de dados. |
 | **GET** | `/api/estatisticas` | **Métricas**: Retorna JSON com médias, mínimas e máximas. |
 
----
 
 ## Hardware e Sensores
 
@@ -79,3 +78,30 @@ A imagem abaixo apresenta a montagem do sistema no simulador:
 - `src/static/images/circuito.png`: Imagem do circuito.
 - `src/templates/`: Arquivos HTML (Jinja2).
 - `dados.db`: Arquivo do banco de dados (gerado automaticamente).
+
+---
+
+## Validação da API (Testes Postman)
+
+Antes da integração com o front-end, as rotas foram validadas via Postman para garantir a integridade dos dados e o suporte ao formato JSON.
+
+### Teste de Endpoint: Dashboard (JSON)
+![Teste GET Dashboard](src/static/images/test-get-dashboard.png)
+
+### Teste de Endpoint: Histórico de Leituras (JSON)
+![Teste GET Histórico](src/static/images/test-get-historico.png)
+
+### Teste de Endpoint: Criação de Registro (POST)
+![Teste POST Criar](src/static/images/test-post-criar.png)
+
+### Teste de Endpoint: Detalhe de Registro (JSON)
+![Teste GET Detalhe](src/static/images/test-get-detalhe.png)
+
+### Teste de Endpoint: Atualização de Registro (PUT/POST)
+![Teste PUT Atualizar](src/static/images/test-put-atualizar.png)
+
+### Teste de Endpoint: Métricas Estatísticas
+![Teste GET Estatísticas](src/static/images/test-get-stats.png)
+
+### Teste de Endpoint: Deleção de Registro
+![Teste DELETE](src/static/images/test-delete.png)
