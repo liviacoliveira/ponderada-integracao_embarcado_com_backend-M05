@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<header class="header">
+    <h1>Estatísticas Detalhadas</h1>
+    <p>Resumo das métricas climáticas capturadas pela estação.</p>
+</header>
+
+<div style="max-width: 800px; margin: 0 auto;">
+    <div class="stats-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+        <div class="stat-card">
+            <h3>Temperatura (Média)</h3>
+            <div class="stat-value">{{ "%.1f"|format(avg_temp) if avg_temp else "--" }}<span class="stat-unit">°C</span></div>
+        </div>
+        <div class="stat-card">
+            <h3>Umidade (Média)</h3>
+            <div class="stat-value">{{ "%.1f"|format(avg_umid) if avg_umid else "--" }}<span class="stat-unit">%</span></div>
+        </div>
+        <div class="stat-card">
+            <h3>Pressão (Média)</h3>
+            <div class="stat-value">{{ "%.1f"|format(avg_pres) if avg_pres else "--" }}<span class="stat-unit">hPa</span></div>
+        </div>
+    </div>
+
+    <div class="section-card" style="margin-top: 2rem;">
+        <h2 style="text-align: center; margin-bottom: 2rem;">Valores Extremos (Máx / Mín)</h2>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 2rem; text-align: center;">
+            <!-- Temperatura -->
+            <div>
+                <p style="color: var(--text-dim); margin-bottom: 0.5rem; font-weight: 600;">Temperatura</p>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+                    <span class="badge badge-temp" style="width: 100px;">↑ {{ "%.1f"|format(max_temp) if max_temp else "--" }}°C</span>
+                    <span class="badge badge-temp" style="width: 100px; background: rgba(59, 130, 246, 0.2); color: var(--secondary);">↓ {{ "%.1f"|format(min_temp) if min_temp else "--" }}°C</span>
+                </div>
+            </div>
+
+            <!-- Umidade -->
+            <div>
+                <p style="color: var(--text-dim); margin-bottom: 0.5rem; font-weight: 600;">Umidade</p>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+                    <span class="badge badge-umid" style="width: 100px;">↑ {{ "%.1f"|format(max_umid) if max_umid else "--" }}%</span>
+                    <span class="badge badge-umid" style="width: 100px; background: rgba(167, 139, 250, 0.2); color: var(--primary);">↓ {{ "%.1f"|format(min_umid) if min_umid else "--" }}%</span>
+                </div>
+            </div>
+
+            <!-- Pressão -->
+            <div>
+                <p style="color: var(--text-dim); margin-bottom: 0.5rem; font-weight: 600;">Pressão</p>
+                <div style="display: flex; flex-direction: column; gap: 0.5rem; align-items: center;">
+                    <span class="badge" style="width: 100px; background: rgba(255,255,255,0.1); color: var(--text);">↑ {{ "%.1f"|format(max_pres) if max_pres else "--" }}</span>
+                    <span class="badge" style="width: 100px; background: rgba(255,255,255,0.05); color: var(--text-dim);">↓ {{ "%.1f"|format(min_pres) if min_pres else "--" }}</span>
+                </div>
+            </div>
+        </div>
+
+        <hr style="margin: 2.5rem 0; border: none; border-top: 1px solid rgba(167, 139, 250, 0.1);">
+
+        <div style="text-align: center; color: var(--text-dim);">
+            <p>Total de Amostras: <strong>{{ total }}</strong></p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Dados calculados a partir de todos os registros históricos.</p>
+        </div>
+    </div>
+</div>
+
+<div style="margin-top: 3rem; text-align: center;">
+    <a href="{{ url_for('index') }}" style="color: var(--text-dim);">← Voltar ao Dashboard</a>
+    <span style="margin: 0 1rem; color: rgba(255,255,255,0.1);">|</span>
+    <a href="/api/estatisticas?formato=json" style="color: var(--primary);">Visualizar como JSON</a>
+</div>
+{% endblock %}

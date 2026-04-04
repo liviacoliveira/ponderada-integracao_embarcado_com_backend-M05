@@ -99,9 +99,9 @@ def deletar(id):
 
 @app.route('/api/estatisticas')
 def estatisticas():
-    """Média, mín e máx do período (Sempre JSON conforme tabela)."""
+    """Média, mín e máx do período (Suporta JSON e HTML)."""
     data = database.obter_estatisticas()
-    return jsonify(data)
+    return responder('estatisticas.html', data)
 
 if __name__ == '__main__':
     app.run(
