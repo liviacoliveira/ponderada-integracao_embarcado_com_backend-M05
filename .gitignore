@@ -24,8 +24,9 @@ venv/
 .venv/
 
 # Database
-# Note: Remova a linha abaixo caso deseje comitar o banco com os 30 dados de teste
-# *.db
+*.db
+*.db-shm
+*.db-wal
 
 # Environments
 .env
